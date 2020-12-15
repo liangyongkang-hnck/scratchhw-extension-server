@@ -9,170 +9,49 @@ function addBlocks(Blockly) {
                 "message0": Blockly.Msg.L298N_INIT,
                 "args0": [
                     {
-                        "type": "field_dropdown",
-                        "name": "input1",
-                        "options": [
-                            ['0', '0'],
-                            ['1', '1'],
-                            ['2', '2'],
-                            ['3', '3'],
-                            ['4', '4'],
-                            ['5', '5'],
-                            ['6', '6'],
-                            ['7', '7'],
-                            ['8', '8'],
-                            ['9', '9'],
-                            ['10', '10'],
-                            ['11', '11'],
-                            ['12', '12'],
-                            ['13', '13'],
-                            ['A0', 'A0'],
-                            ['A1', 'A1'],
-                            ['A2', 'A2'],
-                            ['A3', 'A3'],
-                            ['A4', 'A4'],
-                            ['A5', 'A5']]
+                        "type": "input_value",
+                        "name": "motor_name"
+                   
                     },
                     {
-                        "type": "field_dropdown",
-                        "name": "input2",
-                        "options": [
-                            ['0', '0'],
-                            ['1', '1'],
-                            ['2', '2'],
-                            ['3', '3'],
-                            ['4', '4'],
-                            ['5', '5'],
-                            ['6', '6'],
-                            ['7', '7'],
-                            ['8', '8'],
-                            ['9', '9'],
-                            ['10', '10'],
-                            ['11', '11'],
-                            ['12', '12'],
-                            ['13', '13'],
-                            ['A0', 'A0'],
-                            ['A1', 'A1'],
-                            ['A2', 'A2'],
-                            ['A3', 'A3'],
-                            ['A4', 'A4'],
-                            ['A5', 'A5']]
+                        "type": "input_value",
+                        "name": "pin",
+
                     },
                     {
-                        "type": "field_dropdown",
-                        "name": "input3",
-                        "options": [
-                            ['0', '0'],
-                            ['1', '1'],
-                            ['2', '2'],
-                            ['3', '3'],
-                            ['4', '4'],
-                            ['5', '5'],
-                            ['6', '6'],
-                            ['7', '7'],
-                            ['8', '8'],
-                            ['9', '9'],
-                            ['10', '10'],
-                            ['11', '11'],
-                            ['12', '12'],
-                            ['13', '13'],
-                            ['A0', 'A0'],
-                            ['A1', 'A1'],
-                            ['A2', 'A2'],
-                            ['A3', 'A3'],
-                            ['A4', 'A4'],
-                            ['A5', 'A5']]
-                    },
-                    {
-                        "type": "field_dropdown",
-                        "name": "input4",
-                        "options": [
-                            ['0', '0'],
-                            ['1', '1'],
-                            ['2', '2'],
-                            ['3', '3'],
-                            ['4', '4'],
-                            ['5', '5'],
-                            ['6', '6'],
-                            ['7', '7'],
-                            ['8', '8'],
-                            ['9', '9'],
-                            ['10', '10'],
-                            ['11', '11'],
-                            ['12', '12'],
-                            ['13', '13'],
-                            ['A0', 'A0'],
-                            ['A1', 'A1'],
-                            ['A2', 'A2'],
-                            ['A3', 'A3'],
-                            ['A4', 'A4'],
-                            ['A5', 'A5']]
+                        "type": "input_value",
+                        "name": "speed_pin",
+                  
                     }
+                    
                 ],
                 "colour": color,
                 "extensions": ["shape_statement"]
             });
         }
     };
-
-    Blockly.Blocks['l298n_forward'] = {
+    Blockly.Blocks['l298n_motor_control'] = {
         init: function () {
             this.jsonInit({
-                "message0": Blockly.Msg.L298N_FORWARD,
+                "message0": Blockly.Msg.L298N_MOTOR_CONTROL,
                 "args0": [
-
-                ],
-                "colour": color,
-                "extensions": ["shape_statement"]
-            });
-        }
-    };
-    
-    Blockly.Blocks['l298n_back'] = {
-        init: function () {
-            this.jsonInit({
-                "message0": Blockly.Msg.L298N_BACK,
-                "args0": [
-
-                ],
-                "colour": color,
-                "extensions": ["shape_statement"]
-            });
-        }
-    };
-    
-    Blockly.Blocks['l298n_left'] = {
-        init: function () {
-            this.jsonInit({
-                "message0": Blockly.Msg.L298N_LEFT,
-                "args0": [
-
-                ],
-                "colour": color,
-                "extensions": ["shape_statement"]
-            });
-        }
-    };
-
-    Blockly.Blocks['l298n_right'] = {
-        init: function () {
-            this.jsonInit({
-                "message0": Blockly.Msg.L298N_RIGHT,
-                "args0": [
-
-                ],
-                "colour": color,
-                "extensions": ["shape_statement"]
-            });
-        }
-    };
-    
-    Blockly.Blocks['l298n_stop'] = {
-        init: function () {
-            this.jsonInit({
-                "message0": Blockly.Msg.L298N_STOP,
-                "args0": [
-
+                    {
+                        "type": "input_value",
+                        "name": "motor_name"
+                    },
+                    {
+                        "type": "field_dropdown",
+                        "name": "direction",
+                        "options": [
+                            ['正转', 1],
+                            ['反转', 2],
+                            ['停止', 0]]
+                       
+                    },
+                    {
+                        "type": "input_value",
+                        "name": "speed",                        
+                    }
                 ],
                 "colour": color,
                 "extensions": ["shape_statement"]

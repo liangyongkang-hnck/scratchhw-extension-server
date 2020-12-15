@@ -1,96 +1,42 @@
 function addGenerator(Blockly) {
     Blockly.Arduino['l298n_init'] = function (block) {
-        // let no = Blockly.Arduino.valueToCode(this, 'no', Blockly.Arduino.ORDER_ATOMIC);
-        // let pin = this.getFieldValue('pin');
-        // let mode = this.getFieldValue('mode');
-        let input1 = this.getFieldValue('input1');
-        let input2 = this.getFieldValue('input2');
-        let input3 = this.getFieldValue('input3');
-        let input4 = this.getFieldValue('input4');
 
-        
-        // Blockly.Arduino.includes_['include_l298n_init'] = `#include "<DHT.h>"`;
-        Blockly.Arduino.definitions_[`define_l298n_init_input1`] = `int input1=${input1};`;
-        Blockly.Arduino.definitions_[`define_l298n_init_input2`] = `int input2=${input2};`;
-        Blockly.Arduino.definitions_[`define_l298n_init_input3`] = `int input3=${input3};`;
-        Blockly.Arduino.definitions_[`define_l298n_init_input4`] = `int input4=${input4};`;
-        //向前转
-        Blockly.Arduino.definitions_[`define_l298n_init_forward`] = `void forward(){//forward 向前转
-digitalWrite(input1,HIGH); //给高电平
-digitalWrite(input2,LOW);  //给低电平
-digitalWrite(input3,HIGH); //给高电平
-digitalWrite(input4,LOW);  //给低电平
-delay(500);   //延时1秒    
-} 
-`
-        Blockly.Arduino.definitions_[`define_l298n_init_stop`] = `void stop(){
-//stop 停止
-digitalWrite(input1,LOW);
-digitalWrite(input2,LOW);  
-digitalWrite(input3,LOW);
-digitalWrite(input4,LOW);  
-delay(500);  //延时0.5秒
-}
-`
-        Blockly.Arduino.definitions_[`define_l298n_init_left`] = `void left(){
-//left 左转
-digitalWrite(input1,LOW);
-digitalWrite(input2,LOW);  
-digitalWrite(input3,HIGH);
-digitalWrite(input4,LOW);  
-delay(500);  //延时0.5秒
-}
-`
-        Blockly.Arduino.definitions_[`define_l298n_init_right`] = `void right(){
-//Right 右转
-digitalWrite(input1,HIGH);
-digitalWrite(input2,LOW);  
-digitalWrite(input3,LOW);
-digitalWrite(input4,LOW);  
-delay(500);  //延时0.5秒
-}
-`
-        Blockly.Arduino.definitions_[`define_l298n_init_back`] = `void back(){
-//back 向后转
-digitalWrite(input1,LOW);
-digitalWrite(input2,HIGH);  
-digitalWrite(input3,LOW);
-digitalWrite(input4,HIGH);  
-delay(500);
-}
-`
-
-        //初始化所有引脚为输出模式
-        Blockly.Arduino.setups_['setups_l298n']=`pinMode(input1,OUTPUT);
-pinMode(input2,OUTPUT);
-pinMode(input3,OUTPUT);
-pinMode(input4,OUTPUT);`
-
-        return '';
+        let motor_name = Blockly.Arduino.valueToCode(this, 'motor_name', Blockly.Arduino.ORDER_ATOMIC);
+        let pin = Blockly.Arduino.valueToCode(this, 'pin', Blockly.Arduino.ORDER_ATOMIC);
+        let speed_pin = Blockly.Arduino.valueToCode(this, 'speed_pin', Blockly.Arduino.ORDER_ATOMIC);
+        motor_name=motor_name.replace(/\"/g, "")
+        //初始化
+        Blockly.Arduino.definitions_[`define_l298n_init_${motor_name}_pin`] = `int ${motor_name}_pin=${pin};`;
+        Blockly.Arduino.definitions_[`define_l298n_init_${motor_name}_speed_pin`] = `int ${motor_name}_speed_pin=${speed_pin};`;
+        Blockly.Arduino.definitions_[`define_l298n_init_motor_method`] = `
+void motor(int pin,int speedPin,int direction,int speed){
+    pinMode(pin,OUTPUT);
+    if(direction==1){//正转
+        analogWrite(speedPin,speed);
+        digitalWrite(pin,HIGH);
+    }else if(direction==2){//反转
+        analogWrite(speedPin,255-speed);
+        digitalWrite(pin,LOW);
+    }else if(direction==0){//停止
+        analogWrite(speedPin,0);
+        digitalWrite(pin,LOW);
     }
 
-    Blockly.Arduino['l298n_forward'] = function (block) {
-        return 'forward();\n';
-    }
-    Blockly.Arduino['l298n_back'] = function (block) {
-        return 'back();\n';
-    }
-    Blockly.Arduino['l298n_left'] = function (block) {
-        return 'left();\n';
-    }
-    Blockly.Arduino['l298n_right'] = function (block) {
-        return 'right();\n';
-    }
-    Blockly.Arduino['l298n_stop'] = function (block) {
-        return 'stop();\n';
-    }
-    // Blockly.Arduino['dht_readTemperature'] = function (block) {
-    //     let no = Blockly.Arduino.valueToCode(this, 'no', Blockly.Arduino.ORDER_ATOMIC);
-    //     let unit = this.getFieldValue('unit');
-    //     return [`dht_${no}.readTemperature(${unit})`, Blockly.Arduino.ORDER_ATOMIC];
-    // }
+}
+`;
+    return '';
+}
+Blockly.Arduino['l298n_motor_control'] = function (block) {
+    let motor_name = Blockly.Arduino.valueToCode(this, 'motor_name', Blockly.Arduino.ORDER_ATOMIC);
+    motor_name=motor_name.replace(/\"/g, "")
+    let direction = this.getFieldValue('direction');
+    let speed = Blockly.Arduino.valueToCode(this, 'speed', Blockly.Arduino.ORDER_ATOMIC);
+    let code=`motor(${motor_name}_pin,${motor_name}_speed_pin,${direction},${speed});\n`
+    return code;
+}
+
 
     return Blockly;
-}
 
+}
 exports = addGenerator;
